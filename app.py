@@ -1,6 +1,12 @@
 import pyray as pr
 from raylib import colors
 
+def calculate(expression):
+    try:
+        result = round(eval(expression), 4)  # Используем встроенную функцию eval для вычисления выражения
+        return result
+    except Exception as e:
+        return "Error"
 
 class Button: #класс кнопки
     def __init__(self, x_center, y_center, width, height, text, color_bg, color_text, color_nk, font_size=70):
@@ -115,6 +121,9 @@ class Calculator:
 
     def proccess(self):
         n = 51
+        if pr.is_key_pressed(259):
+            self.output = ""
+            self.out_str_x = 450
         if self.seven.is_clicked():
             self.output += "7"
             self.out_str_x -= n
@@ -161,7 +170,9 @@ class Calculator:
             self.output += "/"
             self.out_str_x -= n
         if self.equal.is_clicked():
-            print("equal func") # считаем выражение
+            self.output = str(calculate(self.output))
+            self.out_str_x = 450
+            self.out_str_x -= len(self.output) * 51
         if self.dot.is_clicked():
             self.output += "."
             self.out_str_x -= n
