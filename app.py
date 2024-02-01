@@ -45,6 +45,8 @@ class Button: #класс кнопки
 class Calculator:
     def __init__(self):
         """ Initializing UI objects """
+        self.font = pr.load_font("fonts/CascadiaMono-Bold.otf")
+
         self.seven = Button(60, 200, 100, 100, "7", colors.BLACK, colors.WHITE, colors.GRAY)
         self.eight = Button(180, 200, 100, 100, "8", colors.BLACK, colors.WHITE, colors.GRAY)
         self.nine = Button(300, 200, 100, 100, "9", colors.BLACK, colors.WHITE, colors.GRAY)
@@ -65,19 +67,16 @@ class Calculator:
         self.equal = Button(300, 560, 100, 100, "=", colors.BLACK, colors.WHITE, colors.GRAY)
         self.dot = Button(180, 560, 100, 100, ". ", colors.BLACK, colors.WHITE, colors.GRAY)
 
+        self.output = ""
+        self.outx = 240
+        self.outy = 75
+        self.outh = 110
+        self.outw = 450
+        self.out_str_x = 450
+
     def draw(self):
         """ Drawing UI objects """
         pr.clear_background(colors.LIGHTGRAY)
-        outx = 240
-        outy = 75
-        outh = 110
-        outw = 450
-        pr.draw_rectangle_rounded_lines(
-            pr.Rectangle(outx - outw // 2, outy - outh // 2, outw, outh),
-            0.1, 100, 5, colors.GRAY)
-        pr.draw_rectangle_rounded(
-            pr.Rectangle(outx - outw // 2, outy - outh // 2, outw, outh),
-            0.1, 100, colors.WHITE)
 
         self.seven.draw()
         self.eight.draw()
@@ -99,33 +98,73 @@ class Calculator:
         self.equal.draw()
         self.dot.draw()
 
-        output = "test"
-        pr.draw_text_ex(pr.load_font("fonts/CascadiaMono-Bold.otf"), output, (250, 25), 100, 1, colors.BLACK, "right")
+        pr.draw_rectangle_rounded(
+            pr.Rectangle(self.outx - self.outw // 2, self.outy - self.outh // 2, self.outw, self.outh),
+            0.1, 100, colors.WHITE)
+
+        pr.draw_text_ex(self.font, self.output, (self.out_str_x, 25), 100, 1, colors.BLACK)
+
+        pr.draw_rectangle_rounded(
+            pr.Rectangle((self.outx - self.outw // 2) - 450, self.outy - self.outh // 2, self.outw, self.outh),
+            0.1, 100, colors.LIGHTGRAY)
+
+        pr.draw_rectangle_rounded_lines(
+            pr.Rectangle(self.outx - self.outw // 2, self.outy - self.outh // 2, self.outw, self.outh),
+            0.1, 100, 5, colors.GRAY)
+
 
     def proccess(self):
-        # if self.seven.is_clicked:
-        #     output += "7"
-        # if self.eight.is_clicked:
-        #     output += "8"
-        # if self.nine.is_clicked:
-        #     output += "9"
-        #
-        # if self.four.is_clicked:
-        #     output += "4"
-        self.five.draw()
-        self.six.draw()
+        n = 51
+        if self.seven.is_clicked():
+            self.output += "7"
+            self.out_str_x -= n
+        if self.eight.is_clicked():
+            self.output += "8"
+            self.out_str_x -= n
+        if self.nine.is_clicked():
+            self.output += "9"
+            self.out_str_x -= n
 
-        self.three.draw()
-        self.two.draw()
-        self.one.draw()
-        self.zero.draw()
+        if self.four.is_clicked():
+            self.output += "4"
+            self.out_str_x -= n
+        if self.five.is_clicked():
+            self.output += "5"
+            self.out_str_x -= n
+        if self.six.is_clicked():
+            self.output += "6"
+            self.out_str_x -= n
 
-        self.plus.draw()
-        self.minus.draw()
-        self.multiply.draw()
-        self.divide.draw()
-        self.equal.draw()
-        self.dot.draw()
+        if self.three.is_clicked():
+            self.output += "3"
+            self.out_str_x -= n
+        if self.two.is_clicked():
+            self.output += "2"
+            self.out_str_x -= n
+        if self.one.is_clicked():
+            self.output += "1"
+            self.out_str_x -= n
+        if self.zero.is_clicked():
+            self.output += "0"
+            self.out_str_x -= n
+
+        if self.plus.is_clicked():
+            self.output += "+"
+            self.out_str_x -= n
+        if self.minus.is_clicked():
+            self.output += "-"
+            self.out_str_x -= n
+        if self.multiply.is_clicked():
+            self.output += "*"
+            self.out_str_x -= n
+        if self.divide.is_clicked():
+            self.output += "/"
+            self.out_str_x -= n
+        if self.equal.is_clicked():
+            print("equal func") # считаем выражение
+        if self.dot.is_clicked():
+            self.output += "."
+            self.out_str_x -= n
 
 class Application:
     def __init__(self):
